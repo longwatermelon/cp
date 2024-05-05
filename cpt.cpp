@@ -5,7 +5,7 @@ using ll=long long;
 template <typename T> T cdiv(T a, T b) {return a/b+(a/b>=0 && a%b!=0);}
 template <typename T> T fdiv(T a, T b) {return a/b-(a/b<0 && a%b!=0);}
 template <typename T> T mod(T a, T b) {return ((a%b)+b)%b;}
-template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';++it;}cout<<*it<<'\n';}
+template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';it=next(it);}cout<<*it<<'\n';}
 
 void solve() {
 }
