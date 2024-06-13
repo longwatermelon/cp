@@ -14,5 +14,5 @@ void solve() {
 }
 
 int main() {
-    /* set_io(""); */
+    /* setio(""); */
 }
