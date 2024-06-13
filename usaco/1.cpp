@@ -8,7 +8,7 @@ template <typename T> T fdiv(T a, T b) {return a/b-(a/b<0 && a%b!=0);}
 template <typename T> T mod(T a, T b) {return ((a%b)+b)%b;}
 template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';it=next(it);}cout<<*it<<'\n';}
 struct pt_t {int x,y;bool operator<(pt_t b)const{return x==b.x?y<b.y:x<b.x;}bool operator==(pt_t b)const{return x==b.x&&y==b.y;}};
-void set_io(const char *name) {freopen((string(name)+".in").c_str(),"r",stdin);freopen((string(name)+".out").c_str(),"w",stdout);}
+void setio(const char *name) {freopen((string(name)+".in").c_str(),"r",stdin);freopen((string(name)+".out").c_str(),"w",stdout);}
 
 void solve() {
 }
