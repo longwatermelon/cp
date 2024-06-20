@@ -10,7 +10,7 @@ template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){c
 #define PTX x
 #define PTY y
 struct pt_t {int PTX,PTY;bool operator<(pt_t b)const{return PTX==b.PTX?PTY<b.PTY:PTX<b.PTX;}bool operator==(pt_t b)const{return PTX==b.PTX&&PTY==b.PTY;}};
-vector<int> genord(int len, function<bool(int,int)> cmp) {vector<int> ord(len+1);for(int i=1;i<=len;++i)ord[i]=i;sort(begin(ord)+1,end(ord),cmp);return ord;}
+template <typename T> vector<int> genord(int len, T cmp) {vector<int> ord(len+1);for(int i=1;i<=len;++i)ord[i]=i;sort(begin(ord)+1,end(ord),cmp);return ord;}
 
 void solve() {
 }
