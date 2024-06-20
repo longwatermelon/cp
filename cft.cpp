@@ -7,7 +7,10 @@ template <typename T> T cdiv(T a, T b) {return a/b+(a/b>=0 && a%b!=0);}
 template <typename T> T fdiv(T a, T b) {return a/b-(a/b<0 && a%b!=0);}
 template <typename T> T mod(T a, T b) {return ((a%b)+b)%b;}
 template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';it=next(it);}cout<<*it<<'\n';}
-struct pt_t {int x,y;bool operator<(pt_t b)const{return x==b.x?y<b.y:x<b.x;}bool operator==(pt_t b)const{return x==b.x&&y==b.y;}};
+#define PTX x
+#define PTY y
+struct pt_t {int PTX,PTY;bool operator<(pt_t b)const{return PTX==b.PTX?PTY<b.PTY:PTX<b.PTX;}bool operator==(pt_t b)const{return PTX==b.PTX&&PTY==b.PTY;}};
+vector<int> genord(int len) {vector<int> ord(len+1);for(int i=1;i<=len;++i)ord[i]=i;return ord;}
 
 void solve() {
 }
