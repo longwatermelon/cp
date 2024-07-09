@@ -12,7 +12,8 @@ template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){c
 struct pt_t {int PTX,PTY;bool operator<(pt_t pt2)const{return PTX==pt2.PTX?PTY<pt2.PTY:PTX<pt2.PTX;}bool operator==(pt_t pt2)const{return PTX==pt2.PTX&&PTY==pt2.PTY;}bool operator>(pt_t pt2)const{return !(*this<pt2||*this==pt2);}};
 template <typename T> vector<int> genord(int len, T cmp) {vector<int> ord(len+1);for(int i=1;i<=len;++i)ord[i]=i;sort(begin(ord)+1,end(ord),cmp);return ord;}
 int M=1e9+7;
-int modinv(int x) {return x<=1 ? x : M-M/x*modinv(M%x)%M;}
+int modpow(int x, ll p) {assert(p>=0);return p==0 ? 1 : ((ll)modpow(((ll)x*x)%M,p/2)*(p&1?x:1))%M;}
+int modinv(int x) {return modpow(x,M-2);}
 
 void solve() {
 }
