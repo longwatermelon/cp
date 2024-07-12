@@ -14,6 +14,8 @@ template <typename T> vector<int> genord(int len, T cmp) {vector<int> ord(len+1)
 int M=1e9+7;
 int modpow(int x, ll p) {assert(p>=0);return p==0 ? 1 : ((ll)modpow(((ll)x*x)%M,p/2)*(p&1?x:1))%M;}
 int modinv(int x) {return modpow(x,M-2);}
+map<int,int> primefac(int x) {map<int,int> mp;for(int i=2;i*i<=x;++i){while(x%i==0){mp[i]++;x/=i;}}if(x>1)mp[x]++;return mp;}
+void sieveofe(int mx, bool *prime) {prime[1]=false;fill(prime+2,prime+1+mx,true);for(int i=2;i*i<=mx;++i){int j=i;while(i*j<mx){prime[i*j]=false;++j;}}}
 
 void solve() {
 }
