@@ -19,6 +19,7 @@ template <typename T> map<T,int> primefac(T x) {map<T,int> mp;for(T i=2;i*i<=x;+
 void sieveofe(int mx, bool *prime) {prime[1]=false;fill(prime+2,prime+1+mx,true);for(int i=2;i*i<=mx;++i){int j=i;while(i*j<mx){prime[i*j]=false;++j;}}}
 // not ordered
 template <typename T> vector<T> factor(T x) {vector<T>f;for(T i=1;i*i<=x;++i){if(x%i==0){f.push_back(i);if (x/i!=i)f.push_back(x/i);}}return f;}
+void yn(bool ans) {puts(ans?"yes":"no");}
 
 void solve() {
 }
