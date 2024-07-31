@@ -23,8 +23,8 @@ void sieveofe(int mx, bool *prime) {prime[1]=false;fill(prime+2,prime+1+mx,true)
 template <typename T> vector<T> factor(T x) {vector<T>f;for(T i=1;i*i<=x;++i){if(x%i==0){f.push_back(i);if (x/i!=i)f.push_back(x/i);}}return f;}
 void yn(bool ans) {puts(ans?"yes":"no");}
 template <typename T> using vv=vector<vector<T>>; template <typename T> using vvv=vector<vector<vector<T>>>;
-template <typename T> vv<T> vec2(int n, int m, int val) {return vv<T>(n,vector<T>(m,val));}
-template <typename T> vvv<T> vec3(int n, int m, int k, int val) {return vvv<T>(n,vv<T>(m,vector<T>(k,val)));}
+template <typename T> vv<T> vec2(int n, int m, T val=0) {return vv<T>(n,vector<T>(m,val));}
+template <typename T> vvv<T> vec3(int n, int m, int k, T val=0) {return vvv<T>(n,vv<T>(m,vector<T>(k,val)));}
 
 void solve() {
 }
