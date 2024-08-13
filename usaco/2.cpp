@@ -11,6 +11,7 @@ template <typename T> T mod(T a, T b) {return ((a%b)+b)%b;}
 template <typename T> T rmod(T a, T mn, T mx) {return mod((a-mn),(mx-mn+1))+mn;}
 template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';it=next(it);}cout<<*it<<'\n';}
 void yn(bool ans) {puts(ans?"yes":"no");}
+template <typename T> using vec=vector<T>;
 template <typename T> struct vec2:vector<vector<T>> {vec2(int n, int m, T val=T()):vector<vector<T>>(n,vector<T>(m,val)){}};
 template <typename T> struct vec3:vector<vector<vector<T>>> {vec3(int n, int m, int k, T val=T()):vector<vector<vector<T>>>(n,vector<vector<T>>(m,vector<T>(k,val))){}};
 void setio(const char *name) {freopen((string(name)+".in").c_str(),"r",stdin);freopen((string(name)+".out").c_str(),"w",stdout);}
