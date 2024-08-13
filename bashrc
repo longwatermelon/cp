@@ -8,6 +8,11 @@ function cpt() {
     cp ~/templates/cpt.cpp $1.cpp
 }
 
+function bt() {
+    echo "bt template to $1.cpp"
+    cp ~/templates/bt.cpp $1.cpp
+}
+
 function contest() {
     builtin cd ~/cp/contest
     clear
