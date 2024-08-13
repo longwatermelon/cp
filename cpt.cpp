@@ -23,9 +23,8 @@ void sieveofe(int mx, bool *prime) {prime[1]=false;fill(prime+2,prime+1+mx,true)
 // unordered, O(sqrt(x))
 template <typename T> vector<T> factor(T x) {vector<T>f;for(T i=1;i*i<=x;++i){if(x%i==0){f.push_back(i);if (x/i!=i)f.push_back(x/i);}}return f;}
 void yn(bool ans) {puts(ans?"yes":"no");}
-template <typename T> using vv=vector<vector<T>>; template <typename T> using vvv=vector<vector<vector<T>>>;
-template <typename T> vv<T> vec2(int n, int m, T val=0) {return vv<T>(n,vector<T>(m,val));}
-template <typename T> vvv<T> vec3(int n, int m, int k, T val=0) {return vvv<T>(n,vv<T>(m,vector<T>(k,val)));}
+template <typename T> struct vec2:vector<vector<T>> {vec2(int n, int m, T val=T()):vector<vector<T>>(n,vector<T>(m,val)){}};
+template <typename T> struct vec3:vector<vector<vector<T>>> {vec3(int n, int m, int k, T val=T()):vector<vector<vector<T>>>(n,vector<vector<T>>(m,vector<T>(k,val))){}};
 // ncr is modded
 int rencr(int n,int r){if(n<r)return 0;else if(r==0||r==n) return 1;else return(rencr(n-1,r-1)+rencr(n-1,r))%MD;}
 vector<int> fac,invfac;int clncr(int n,int r){if(n<r)return 0;return(((ll)fac[n]*invfac[r])%MD*invfac[n-r])%MD;}
