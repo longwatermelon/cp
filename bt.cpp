@@ -14,6 +14,12 @@ void yn(bool ans) {puts(ans?"yes":"no");}
 template <typename T> using vec=vector<T>;
 template <typename T> struct vec2:vector<vector<T>> {vec2(int n, int m, T val=T()):vector<vector<T>>(n,vector<T>(m,val)){}};
 template <typename T> struct vec3:vector<vector<vector<T>>> {vec3(int n, int m, int k, T val=T()):vector<vector<vector<T>>>(n,vector<vector<T>>(m,vector<T>(k,val))){}};
+#define PTX x
+#define PTY y
+struct pt_t {int PTX,PTY;bool operator==(pt_t pt2)const{return PTX==pt2.PTX&&PTY==pt2.PTY;}};
+int MD=1e9+7;
+int modpow(int x, ll p) {assert(p>=0);return p==0?1:((ll)modpow(((ll)x*x)%MD,p/2)*(p&1?x:1))%MD;}
+int modinv(int x) {return modpow(x,MD-2);}
 
 void solve() {
 }
