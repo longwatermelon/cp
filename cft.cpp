@@ -27,8 +27,8 @@ template <typename T> using vec=vector<T>;
 template <typename T> struct vec2:vector<vector<T>> {vec2(int n, int m, T val=T()):vector<vector<T>>(n,vector<T>(m,val)){}};
 template <typename T> struct vec3:vector<vector<vector<T>>> {vec3(int n, int m, int k, T val=T()):vector<vector<vector<T>>>(n,vector<vector<T>>(m,vector<T>(k,val))){}};
 // ncr is modded
-int rencr(int n,int r){if(n<r)return 0;else if(r==0||r==n) return 1;else return(rencr(n-1,r-1)+rencr(n-1,r))%MD;}
-vector<int> fac,invfac;int clncr(int n,int r){if(n<r)return 0;return(((ll)fac[n]*invfac[r])%MD*invfac[n-r])%MD;}
+ll rencr(int n,int r){if(n<r)return 0;else if(r==0||r==n) return 1;else return(rencr(n-1,r-1)+rencr(n-1,r))%MD;}
+vector<int> fac,invfac;ll clncr(int n,int r){if(n<r)return 0;return(((ll)fac[n]*invfac[r])%MD*invfac[n-r])%MD;}
 
 void solve() {
 }
