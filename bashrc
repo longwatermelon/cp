@@ -1,16 +1,11 @@
 function cft() {
-    echo "codeforces template to $1.cpp"
+    echo "cf template to $1.cpp"
     cp ~/templates/cft.cpp $1.cpp
 }
 
 function cpt() {
     echo "cp template to $1.cpp"
     cp ~/templates/cpt.cpp $1.cpp
-}
-
-function bt() {
-    echo "bt template to $1.cpp"
-    cp ~/templates/bt.cpp $1.cpp
 }
 
 function contest() {
@@ -30,13 +25,6 @@ function cf() {
     cft F
     cft G
     cft H
-    clear
-    nvim
-}
-
-function cfalt() {
-    cf-reset $1
-    builtin cd ~/cp/contest
     clear
     nvim
 }
