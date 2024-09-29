@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll=long long;
+#define int ll
 #define sig(x) (x<0?-1:1)
 #define sz(x) ((int)size(x))
 #define all(x) begin(x),end(x)
@@ -24,11 +25,15 @@ ll rencr(int n,int r){if(n<r)return 0;else if(r==0||r==n) return 1;else return(r
 vec<int> F,IF; // fac, inv fac
 void genfac(int mx) {F=vec<int>(mx+1);IF=vec<int>(mx+1);F[0]=1;IF[0]=modinv(1);for(int x=1;x<=mx;++x){F[x]=((ll)F[x-1]*x)%MD;IF[x]=modinv(F[x]);}}
 ll clncr(int n,int r){if(n<r)return 0;return(((ll)F[n]*IF[r])%MD*IF[n-r])%MD;}
+ll logfl(ll base, ll x) {assert(base>1);ll res=0, val=1;while (val*base<=x){val*=base;res++;}return res;}
+ll logcl(ll base, ll x) {assert(base>1);ll res=0, val=1;while (val<x){val*=base;res++;}return res;}
+ll sqrtfl(ll x) {ll rt=sqrtl(x);if (rt*rt>x) rt--;if ((rt+1)*(rt+1)<=x) rt++;return rt;}
+ll sqrtcl(ll x) {ll rt=sqrtl(x);if (rt*rt<x) rt++;if ((rt-1)*(rt-1)>=x) rt--;return rt;}
 
 void solve() {
 }
 
-int main() {
+signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 

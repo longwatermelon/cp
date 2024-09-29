@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll=long long;
+#define int ll
 #define sig(x) (x<0?-1:1)
 #define sz(x) ((int)size(x))
 #define all(x) begin(x),end(x)
@@ -16,7 +17,7 @@ struct pt_t {int PTX,PTY;bool operator==(pt_t pt2)const{return PTX==pt2.PTX&&PTY
 void solve() {
 }
 
-int main() {
+signed main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
