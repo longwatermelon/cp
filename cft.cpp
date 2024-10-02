@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll=long long;
-#define int ll
 #define sig(x) (x<0?-1:1)
 #define sz(x) ((int)size(x))
 #define all(x) begin(x),end(x)
