@@ -5,8 +5,18 @@ using ll=long long;
 #define sz(x) ((int)size(x))
 #define all(x) begin(x),end(x)
 #define all1(x) begin(x)+1,end(x)
-const int MD=1e9+7;
 template <typename T> using vec=vector<T>;
+
+// basic math
+template <typename T> T cdiv(T a, T b) {return a/b+(sig(a)/sig(b)==1 && a%b);}
+template <typename T> T fdiv(T a, T b) {return a/b-(sig(a)/sig(b)==-1 && a%b);}
+template <typename T> T mod(T a, T b) {return ((a%b)+b)%b;}
+template <typename T> T rmod(T a, T mn, T mx) {return mod((a-mn),(mx-mn+1))+mn;}
+
+// large numbers
+const int MD=1e9+7;
+ll modpow(ll x, ll p) {assert(p>=0);return p==0?1:((ll)modpow(((ll)x*x)%MD,p/2)*(p&1?x:1))%MD;}
+ll modinv(ll x) {return modpow(x,MD-2);}
 
 // sieve of eratosthenes, O(mx log(log mx))
 // determine if all numbers <=mx are prime
@@ -99,15 +109,4 @@ vec<int> F,IF; // fac, inv fac
 ll clncr(int n, int r) {
     if (n<r) return 0;
     return (((ll)F[n]*IF[r])%MD*IF[n-r])%MD;
-}
-
-// x^p in mod MD
-ll modpow(ll x, ll p) {
-    assert(p>=0);
-    return p==0 ? 1 : ((ll)modpow(((ll)x*x)%MD,p/2)*(p&1?x:1))%MD;
-}
-
-// modular inverse of x in mod MD
-ll modinv(ll x) {
-    return modpow(x,MD-2);
 }
