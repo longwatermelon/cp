@@ -13,6 +13,7 @@ template <typename T> struct vec3:vector<vector<vector<T>>> {vec3()=default;vec3
 #define PTX x
 #define PTY y
 struct pt_t {int PTX,PTY;bool operator==(pt_t pt2)const{return PTX==pt2.PTX&&PTY==pt2.PTY;}};
+template <typename T> void reset(T *arr, int l, int r, T val) {fill(arr+l,arr+r+1,val);}
 
 void solve() {
 }
