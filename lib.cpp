@@ -8,6 +8,7 @@ using ll=long long;
 #define cmax(x,y) x=max(x,y)
 #define cmin(x,y) x=min(x,y)
 template <typename T> using vec=vector<T>;
+template <typename T> struct vec2:vector<vector<T>> {vec2()=default;vec2(int n, int m, T val=T()):vector<vector<T>>(n,vector<T>(m,val)){}};
 template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';it=next(it);}cout<<*it<<'\n';}
 
 // basic math
@@ -112,4 +113,29 @@ vec<int> F,IF; // fac, inv fac
 ll clncr(int n, int r) {
     if (n<r) return 0;
     return (((ll)F[n]*IF[r])%MD*IF[n-r])%MD;
+}
+
+// USES LOGFL
+// arr 1-indexed
+// build sparse table (range queries for idempotent fn f)
+vec2<int> buildrqi(int *a, int n, const function<int(int,int)> &f) {
+    int mxh=logfl(2,n);
+    vec2<int> v(mxh+1,n+1);
+    for (int i=1; i<=n; ++i) {
+        v[0][i]=a[i];
+    }
+
+    for (int h=1; h<=mxh; ++h) {
+        for (int i=1; i+(1<<(h-1))<=n; ++i) {
+            v[h][i]=f(v[h-1][i], v[h-1][i+(1<<(h-1))]);
+        }
+    }
+
+    return v;
+}
+
+// query [l,r] with idempotent function f
+int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
+    int p=logfl(2,r-l+1);
+    return f(v[p][l],v[p][r-(1<<p)+1]);
 }
