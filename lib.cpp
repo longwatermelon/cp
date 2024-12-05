@@ -115,7 +115,6 @@ ll clncr(int n, int r) {
     return (((ll)F[n]*IF[r])%MD*IF[n-r])%MD;
 }
 
-// USES LOGFL
 // arr 1-indexed
 // build sparse table (range queries for idempotent fn f)
 vec2<int> buildrqi(int *a, int n, const function<int(int,int)> &f) {
@@ -136,6 +135,7 @@ vec2<int> buildrqi(int *a, int n, const function<int(int,int)> &f) {
 
 // query [l,r] with idempotent function f
 int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
+    assert(l<=r);
     int p=logfl(2,r-l+1);
     return f(v[p][l],v[p][r-(1<<p)+1]);
 }
