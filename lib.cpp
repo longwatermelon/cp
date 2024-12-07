@@ -162,3 +162,60 @@ int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
     int p=logfl(2,r-l+1);
     return f(v[p][l],v[p][r-(1<<p)+1]);
 }
+
+////////////////////////////////////////////////////////////////////////
+///////////////////////////// SQRT DECOMP //////////////////////////////
+////////////////////////////////////////////////////////////////////////
+
+// construct sqrt decomp array
+vec<ll> sqrtdecomp(ll *a, int n, const function<ll(ll,ll)> &f) {
+    vec<ll> s;
+    int rt=sqrtfl(n);
+    for (int i=1; i<=n; i+=rt) {
+        s.push_back(a[i]);
+        for (int j=1; j<rt && i+j<=n; ++j) {
+            s.back()=f(s.back(),a[i+j]);
+        }
+    }
+
+    return s;
+}
+
+// sqrt decomp range query f(a[l,r])
+ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll)> &f) {
+    int rt=sqrtfl(n);
+    int il=(l-1)/rt, ir=(r-1)/rt;
+
+    ll ans=a[l];
+    if (il==ir) {
+        for (int i=l+1; i<=r; ++i) {
+            ans=f(ans,a[i]);
+        }
+
+        return ans;
+    }
+
+    for (int i=l+1; i<=(il+1)*rt; ++i) {
+        ans=f(ans,a[i]);
+    }
+    for (int i=ir*rt+1; i<=r; ++i) {
+        ans=f(ans,a[i]);
+    }
+
+    for (int i=il+1; i<=ir-1; ++i) {
+        ans=f(ans,s[i]);
+    }
+
+    return ans;
+}
+
+// sqrt decomp point update a[i]=x
+void sqrtdup(ll *a, int n, int i, ll x, vec<ll> &s, const function<ll(ll,ll)> &f) {
+    int rt=sqrtfl(n);
+    a[i]=x;
+    int st=(i-1)/rt*rt+1;
+    s[(i-1)/rt]=a[st];
+    for (int j=st+1; j<st+rt; ++j) {
+        s[(i-1)/rt]=f(s[(i-1)/rt],a[j]);
+    }
+}
