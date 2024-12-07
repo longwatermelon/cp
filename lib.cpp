@@ -163,11 +163,11 @@ int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
     return f(v[p][l],v[p][r-(1<<p)+1]);
 }
 
-////////////////////////////////////////////////////////////////////////
-///////////////////////////// SQRT DECOMP //////////////////////////////
-////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// SQRT DECOMP GENERAL //////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
-// construct sqrt decomp array
+// construct sqrt decomp array, O(n)
 vec<ll> sqrtdmk(ll *a, int n, const function<ll(ll,ll)> &f) {
     vec<ll> s;
     int rt=sqrtfl(n);
@@ -193,7 +193,11 @@ int sqrtdst(int j, int n) {
     return j*rt+1;
 }
 
-// update segment j according to a
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////// SQRT DECOMP NO LAZY //////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+// update segment j according to a, O(sqrt(n))
 void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, const function<ll(ll,ll)> &f) {
     int rt=sqrtfl(n);
     int st=sqrtdst(j,n);
@@ -203,7 +207,7 @@ void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, const function<ll(ll,ll)> &f) {
     }
 }
 
-// sqrt decomp range query f(a[l,r])
+// sqrt decomp range query f(a[l,r]), O(sqrt(n))
 ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll)> &f) {
     int il=sqrtdseg(l,n), ir=sqrtdseg(r,n);
 
@@ -230,8 +234,88 @@ ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll
     return ans;
 }
 
-// sqrt decomp point update a[i]=x
+// sqrt decomp point update a[i]=x, O(sqrt(n))
 void sqrtdup(ll *a, int n, int i, ll x, vec<ll> &s, const function<ll(ll,ll)> &f) {
     a[i]=x;
     sqrtdupseg(a,n,sqrtdseg(i,n),s,f);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///////////////////////////// SQRT DECOMP LAZY //////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// update segment j according to a w/ lazy prop, O(sqrt(n))
+void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f) {
+    int rt=sqrtfl(n);
+    int st=sqrtdst(j,n);
+    s[j]=a[st];
+    for (int k=st+1; k<st+rt; ++k) {
+        s[j]=f(s[j],f(a[k],lazy[j]));
+    }
+}
+
+// sqrt decomp range query f(a[l,r]) w/ lazy prop, O(sqrt(n))
+ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const vec<ll> &lazy, const function<ll(ll,ll)> &f) {
+    int il=sqrtdseg(l,n), ir=sqrtdseg(r,n);
+
+    ll ans=a[l];
+    if (il==ir) {
+        for (int i=l+1; i<=r; ++i) {
+            ans=f(ans,f(a[i],lazy[il]));
+        }
+
+        return ans;
+    }
+
+    for (int i=l+1; i<=sqrtdst(il+1,n)-1; ++i) {
+        ans=f(ans,f(a[i],lazy[il]));
+    }
+    for (int i=sqrtdst(ir,n); i<=r; ++i) {
+        ans=f(ans,f(a[i],lazy[ir]));
+    }
+
+    for (int i=il+1; i<=ir-1; ++i) {
+        ans=f(ans,s[i]);
+    }
+
+    return ans;
+}
+
+// sqrt decomp point query w/ lazy prop, O(1)
+ll sqrtdqu(ll *a, int n, int i, const vec<ll> &lazy, const function<ll(ll,ll)> &f) {
+    return f(a[i],lazy[sqrtdseg(i,n)]);
+}
+
+// sqrt decomp point update a[i]=x w/ lazy prop, O(sqrt(n))
+void sqrtdup(ll *a, int n, int i, ll x, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f, const function<ll(ll,ll)> &invf) {
+    a[i]=invf(x,lazy[sqrtdseg(i,n)]);
+    sqrtdupseg(a,n,sqrtdseg(i,n),s,lazy,f);
+}
+
+// sqrt decomp range update a[l..r]=f(a[l..r],x) w/ lazy prop, O(sqrt(n))
+void sqrtdup(ll *a, int n, int l, int r, ll x, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f, const function<ll(ll,ll,int)> &repf) {
+    int il=sqrtdseg(l,n), ir=sqrtdseg(r,n);
+
+    if (il==ir) {
+        for (int i=l; i<=r; ++i) {
+            a[i]=f(a[i],x);
+        }
+        sqrtdupseg(a,n,il,s,lazy,f);
+        return;
+    }
+
+    for (int i=l; i<=sqrtdst(il+1,n)-1; ++i) {
+        a[i]=f(a[i],x);
+    }
+    s[il]=repf(s[il],x,sqrtdst(il+1,n)-1-l+1);
+    for (int i=sqrtdst(ir,n); i<=r; ++i) {
+        a[i]=f(a[i],x);
+    }
+    s[ir]=repf(s[ir],x,r-sqrtdst(ir,n)+1);
+
+    int rt=sqrtfl(n);
+    for (int i=il+1; i<=ir-1; ++i) {
+        lazy[i]=f(lazy[i],x);
+        s[i]=repf(s[i],x,rt);
+    }
 }
