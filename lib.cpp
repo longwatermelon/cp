@@ -168,7 +168,7 @@ int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
 ////////////////////////////////////////////////////////////////////////
 
 // construct sqrt decomp array
-vec<ll> sqrtdecomp(ll *a, int n, const function<ll(ll,ll)> &f) {
+vec<ll> sqrtdmk(ll *a, int n, const function<ll(ll,ll)> &f) {
     vec<ll> s;
     int rt=sqrtfl(n);
     for (int i=1; i<=n; i+=rt) {
@@ -181,10 +181,31 @@ vec<ll> sqrtdecomp(ll *a, int n, const function<ll(ll,ll)> &f) {
     return s;
 }
 
+// return j for a[i] in s[j]
+int sqrtdseg(int i, int n) {
+    int rt=sqrtfl(n);
+    return (i-1)/rt;
+}
+
+// return i for leftmost a[i] in s[j]
+int sqrtdst(int j, int n) {
+    int rt=sqrtfl(n);
+    return j*rt+1;
+}
+
+// update segment j according to a
+void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, const function<ll(ll,ll)> &f) {
+    int rt=sqrtfl(n);
+    int st=sqrtdst(j,n);
+    s[j]=a[st];
+    for (int k=st+1; k<st+rt; ++k) {
+        s[j]=f(s[j],a[k]);
+    }
+}
+
 // sqrt decomp range query f(a[l,r])
 ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll)> &f) {
-    int rt=sqrtfl(n);
-    int il=(l-1)/rt, ir=(r-1)/rt;
+    int il=sqrtdseg(l,n), ir=sqrtdseg(r,n);
 
     ll ans=a[l];
     if (il==ir) {
@@ -195,10 +216,10 @@ ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll
         return ans;
     }
 
-    for (int i=l+1; i<=(il+1)*rt; ++i) {
+    for (int i=l+1; i<=sqrtdst(il+1,n)-1; ++i) {
         ans=f(ans,a[i]);
     }
-    for (int i=ir*rt+1; i<=r; ++i) {
+    for (int i=sqrtdst(ir,n); i<=r; ++i) {
         ans=f(ans,a[i]);
     }
 
@@ -211,11 +232,6 @@ ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll
 
 // sqrt decomp point update a[i]=x
 void sqrtdup(ll *a, int n, int i, ll x, vec<ll> &s, const function<ll(ll,ll)> &f) {
-    int rt=sqrtfl(n);
     a[i]=x;
-    int st=(i-1)/rt*rt+1;
-    s[(i-1)/rt]=a[st];
-    for (int j=st+1; j<st+rt; ++j) {
-        s[(i-1)/rt]=f(s[(i-1)/rt],a[j]);
-    }
+    sqrtdupseg(a,n,sqrtdseg(i,n),s,f);
 }
