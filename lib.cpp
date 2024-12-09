@@ -163,6 +163,40 @@ int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
     return f(v[p][l],v[p][r-(1<<p)+1]);
 }
 
+///////////////////////////////////////////////////////////////
+///////////////////////////// DSU /////////////////////////////
+///////////////////////////////////////////////////////////////
+
+// graph vertices 1..n
+// v[i]=component i's vertices
+// g[u]=ind of graph that vert u is in
+void dsumk(int n, vec<vec<int>> &vt, vec<int> &id) {
+    vt=vec<vec<int>>(n+1);
+    id=vec<int>(n+1);
+
+    for (int u=1; u<=n; ++u) {
+        vt[u]={u};
+        id[u]=u;
+    }
+}
+
+// update dsu w/ edge u<->v
+void dsuup(int u, int v, vec<vec<int>> &vt, vec<int> &id) {
+    if (id[u]!=id[v]) {
+        if (sz(vt[id[u]])>sz(vt[id[v]])) {
+            swap(u,v);
+        }
+
+        // merge u to v
+        int src=id[u];
+        for (int x:vt[src]) {
+            id[x]=id[v];
+            vt[id[v]].push_back(x);
+        }
+        vt[src].clear();
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////// SQRT DECOMP GENERAL //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
