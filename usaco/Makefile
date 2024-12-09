@@ -1,4 +1,4 @@
-PROB=1
+PROB=A
 
 .PHONY: all
 all:
