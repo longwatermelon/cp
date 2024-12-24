@@ -5,8 +5,8 @@ using ll=long long;
 #define sz(x) ((int)size(x))
 #define all(x) begin(x),end(x)
 #define all1(x) begin(x)+1,end(x)
-bool ckmin(int &a, int b) {return b<a ? a=b, true : false;}
-bool ckmax(int &a, int b) {return b>a ? a=b, true : false;}
+template <typename T> bool ckmin(T &a, T b) {return b<a ? a=b, true : false;}
+template <typename T> bool ckmax(T &a, T b) {return b>a ? a=b, true : false;}
 template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';it=next(it);}cout<<*it<<'\n';}
 void yn(bool ans) {puts(ans?"yes":"no");}
 template <typename T> T cdiv(T a, T b) {return a/b+(sig(a)/sig(b)==1 && a%b);}
