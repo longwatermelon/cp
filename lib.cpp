@@ -134,6 +134,33 @@ ll clncr(int n, int r) {
     return (((ll)F[n]*IF[r])%MD*IF[n-r])%MD;
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+///////////////////////////// IMPLEMENTATION /////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+// cyclic right shift on [st, nd]
+template <typename T> void cyclic_rshift(T st, T nd) {
+    auto last=*nd;
+    auto it=nd;
+    while (it!=st) {
+        *it=*(it-1);
+        it--;
+    }
+    *st=last;
+}
+
+// cyclic left shift on [st, nd]
+template <typename T> void cyclic_lshift(T st, T nd) {
+    auto first=*st;
+    auto it=st;
+    while (it!=nd) {
+        *it=*(it+1);
+        it++;
+    }
+    *nd=first;
+}
+
 ////////////////////////////////////////////////////////////////////////
 ///////////////////////////// SPARSE TABLE /////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -353,3 +380,5 @@ void sqrtdup(ll *a, int n, int l, int r, ll x, vec<ll> &s, vec<ll> &lazy, const 
         s[i]=repf(s[i],x,rt);
     }
 }
+
+
