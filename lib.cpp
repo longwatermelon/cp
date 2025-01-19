@@ -167,7 +167,7 @@ template <typename T> void cyclic_lshift(T st, T nd) {
 
 // arr 1-indexed
 // build sparse table (range queries for idempotent fn f)
-vec2<int> buildrqi(int *a, int n, const function<int(int,int)> &f) {
+vec2<int> sparse_table_build(int *a, int n, const function<int(int,int)> &f) {
     int mxh=logfl(2,n);
     vec2<int> v(mxh+1,n+1);
     for (int i=1; i<=n; ++i) {
@@ -184,7 +184,7 @@ vec2<int> buildrqi(int *a, int n, const function<int(int,int)> &f) {
 }
 
 // query [l,r] with idempotent function f
-int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
+int sparse_table_query(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
     assert(l<=r);
     int p=logfl(2,r-l+1);
     return f(v[p][l],v[p][r-(1<<p)+1]);
@@ -197,7 +197,7 @@ int rqu(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
 // graph vertices 1..n
 // v[i]=component i's vertices
 // g[u]=ind of graph that vert u is in
-void dsumk(int n, vec<vec<int>> &vt, vec<int> &id) {
+void dsu_init(int n, vec<vec<int>> &vt, vec<int> &id) {
     vt=vec<vec<int>>(n+1);
     id=vec<int>(n+1);
 
@@ -208,7 +208,7 @@ void dsumk(int n, vec<vec<int>> &vt, vec<int> &id) {
 }
 
 // update dsu w/ edge u<->v
-void dsuup(int u, int v, vec<vec<int>> &vt, vec<int> &id) {
+void dsu_add_edge(int u, int v, vec<vec<int>> &vt, vec<int> &id) {
     if (id[u]!=id[v]) {
         if (sz(vt[id[u]])>sz(vt[id[v]])) {
             swap(u,v);
@@ -229,7 +229,7 @@ void dsuup(int u, int v, vec<vec<int>> &vt, vec<int> &id) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // construct sqrt decomp array, O(n)
-vec<ll> sqrtdmk(ll *a, int n, const function<ll(ll,ll)> &f) {
+vec<ll> sqrtd_init(ll *a, int n, const function<ll(ll,ll)> &f) {
     vec<ll> s;
     int rt=sqrtfl(n);
     for (int i=1; i<=n; i+=rt) {
@@ -243,13 +243,13 @@ vec<ll> sqrtdmk(ll *a, int n, const function<ll(ll,ll)> &f) {
 }
 
 // return j for a[i] in s[j]
-int sqrtdseg(int i, int n) {
+int sqrtd_seg(int i, int n) {
     int rt=sqrtfl(n);
     return (i-1)/rt;
 }
 
 // return i for leftmost a[i] in s[j]
-int sqrtdst(int j, int n) {
+int sqrtd_st(int j, int n) {
     int rt=sqrtfl(n);
     return j*rt+1;
 }
@@ -259,9 +259,9 @@ int sqrtdst(int j, int n) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // update segment j according to a, O(sqrt(n))
-void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, const function<ll(ll,ll)> &f) {
+void sqrtd_upd_seg(ll *a, int n, int j, vec<ll> &s, const function<ll(ll,ll)> &f) {
     int rt=sqrtfl(n);
-    int st=sqrtdst(j,n);
+    int st=sqrtd_st(j,n);
     s[j]=a[st];
     for (int k=st+1; k<st+rt; ++k) {
         s[j]=f(s[j],a[k]);
@@ -269,8 +269,8 @@ void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, const function<ll(ll,ll)> &f) {
 }
 
 // sqrt decomp range query f(a[l,r]), O(sqrt(n))
-ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll)> &f) {
-    int il=sqrtdseg(l,n), ir=sqrtdseg(r,n);
+ll sqrtd_query(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll)> &f) {
+    int il=sqrtd_seg(l,n), ir=sqrtd_seg(r,n);
 
     ll ans=a[l];
     if (il==ir) {
@@ -281,10 +281,10 @@ ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll
         return ans;
     }
 
-    for (int i=l+1; i<=sqrtdst(il+1,n)-1; ++i) {
+    for (int i=l+1; i<=sqrtd_st(il+1,n)-1; ++i) {
         ans=f(ans,a[i]);
     }
-    for (int i=sqrtdst(ir,n); i<=r; ++i) {
+    for (int i=sqrtd_st(ir,n); i<=r; ++i) {
         ans=f(ans,a[i]);
     }
 
@@ -296,9 +296,9 @@ ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const function<ll(ll,ll
 }
 
 // sqrt decomp point update a[i]=x, O(sqrt(n))
-void sqrtdup(ll *a, int n, int i, ll x, vec<ll> &s, const function<ll(ll,ll)> &f) {
+void sqrtd_up(ll *a, int n, int i, ll x, vec<ll> &s, const function<ll(ll,ll)> &f) {
     a[i]=x;
-    sqrtdupseg(a,n,sqrtdseg(i,n),s,f);
+    sqrtd_upd_seg(a,n,sqrtd_seg(i,n),s,f);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -306,9 +306,9 @@ void sqrtdup(ll *a, int n, int i, ll x, vec<ll> &s, const function<ll(ll,ll)> &f
 /////////////////////////////////////////////////////////////////////////////
 
 // update segment j according to a w/ lazy prop, O(sqrt(n))
-void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f) {
+void sqrtd_upd_seg(ll *a, int n, int j, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f) {
     int rt=sqrtfl(n);
-    int st=sqrtdst(j,n);
+    int st=sqrtd_st(j,n);
     s[j]=a[st];
     for (int k=st+1; k<st+rt; ++k) {
         s[j]=f(s[j],f(a[k],lazy[j]));
@@ -316,8 +316,8 @@ void sqrtdupseg(ll *a, int n, int j, vec<ll> &s, vec<ll> &lazy, const function<l
 }
 
 // sqrt decomp range query f(a[l,r]) w/ lazy prop, O(sqrt(n))
-ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const vec<ll> &lazy, const function<ll(ll,ll)> &f) {
-    int il=sqrtdseg(l,n), ir=sqrtdseg(r,n);
+ll sqrtd_query(ll *a, int n, int l, int r, const vec<ll> &s, const vec<ll> &lazy, const function<ll(ll,ll)> &f) {
+    int il=sqrtd_seg(l,n), ir=sqrtd_seg(r,n);
 
     ll ans=a[l];
     if (il==ir) {
@@ -328,10 +328,10 @@ ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const vec<ll> &lazy, co
         return ans;
     }
 
-    for (int i=l+1; i<=sqrtdst(il+1,n)-1; ++i) {
+    for (int i=l+1; i<=sqrtd_st(il+1,n)-1; ++i) {
         ans=f(ans,f(a[i],lazy[il]));
     }
-    for (int i=sqrtdst(ir,n); i<=r; ++i) {
+    for (int i=sqrtd_st(ir,n); i<=r; ++i) {
         ans=f(ans,f(a[i],lazy[ir]));
     }
 
@@ -343,36 +343,36 @@ ll sqrtdqu(ll *a, int n, int l, int r, const vec<ll> &s, const vec<ll> &lazy, co
 }
 
 // sqrt decomp point query w/ lazy prop, O(1)
-ll sqrtdqu(ll *a, int n, int i, const vec<ll> &lazy, const function<ll(ll,ll)> &f) {
-    return f(a[i],lazy[sqrtdseg(i,n)]);
+ll sqrtd_query(ll *a, int n, int i, const vec<ll> &lazy, const function<ll(ll,ll)> &f) {
+    return f(a[i],lazy[sqrtd_seg(i,n)]);
 }
 
 // sqrt decomp point update a[i]=x w/ lazy prop, O(sqrt(n))
-void sqrtdup(ll *a, int n, int i, ll x, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f, const function<ll(ll,ll)> &invf) {
-    a[i]=invf(x,lazy[sqrtdseg(i,n)]);
-    sqrtdupseg(a,n,sqrtdseg(i,n),s,lazy,f);
+void sqrtd_up(ll *a, int n, int i, ll x, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f, const function<ll(ll,ll)> &invf) {
+    a[i]=invf(x,lazy[sqrtd_seg(i,n)]);
+    sqrtd_upd_seg(a,n,sqrtd_seg(i,n),s,lazy,f);
 }
 
 // sqrt decomp range update a[l..r]=f(a[l..r],x) w/ lazy prop, O(sqrt(n))
-void sqrtdup(ll *a, int n, int l, int r, ll x, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f, const function<ll(ll,ll,int)> &repf) {
-    int il=sqrtdseg(l,n), ir=sqrtdseg(r,n);
+void sqrtd_up(ll *a, int n, int l, int r, ll x, vec<ll> &s, vec<ll> &lazy, const function<ll(ll,ll)> &f, const function<ll(ll,ll,int)> &repf) {
+    int il=sqrtd_seg(l,n), ir=sqrtd_seg(r,n);
 
     if (il==ir) {
         for (int i=l; i<=r; ++i) {
             a[i]=f(a[i],x);
         }
-        sqrtdupseg(a,n,il,s,lazy,f);
+        sqrtd_upd_seg(a,n,il,s,lazy,f);
         return;
     }
 
-    for (int i=l; i<=sqrtdst(il+1,n)-1; ++i) {
+    for (int i=l; i<=sqrtd_st(il+1,n)-1; ++i) {
         a[i]=f(a[i],x);
     }
-    s[il]=repf(s[il],x,sqrtdst(il+1,n)-1-l+1);
-    for (int i=sqrtdst(ir,n); i<=r; ++i) {
+    s[il]=repf(s[il],x,sqrtd_st(il+1,n)-1-l+1);
+    for (int i=sqrtd_st(ir,n); i<=r; ++i) {
         a[i]=f(a[i],x);
     }
-    s[ir]=repf(s[ir],x,r-sqrtdst(ir,n)+1);
+    s[ir]=repf(s[ir],x,r-sqrtd_st(ir,n)+1);
 
     int rt=sqrtfl(n);
     for (int i=il+1; i<=ir-1; ++i) {
@@ -380,5 +380,3 @@ void sqrtdup(ll *a, int n, int l, int r, ll x, vec<ll> &s, vec<ll> &lazy, const 
         s[i]=repf(s[i],x,rt);
     }
 }
-
-
