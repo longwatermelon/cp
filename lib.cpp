@@ -12,6 +12,11 @@ template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){c
 template <typename T> bool ckmin(T &a, T b) {return b<a ? a=b, true : false;}
 template <typename T> bool ckmax(T &a, T b) {return b>a ? a=b, true : false;}
 
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+template <typename T> using ordset = tree<T,null_type,less<T>,rb_tree_tag,tree_order_statistics_node_update>;
+
 //////////////////////////////////////////////////////////////////////
 ///////////////////////////// BASIC MATH /////////////////////////////
 //////////////////////////////////////////////////////////////////////
