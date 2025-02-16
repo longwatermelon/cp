@@ -153,6 +153,17 @@ ll clncr(int n, int r) {
     return (((ll)F[n]*IF[r])%MD*IF[n-r])%MD;
 }
 
+// gen F, IF for clncr function
+void genfac(int mx) {
+    F=vec<int>(mx+1);
+    IF=vec<int>(mx+1);
+    F[0]=1;
+    IF[0]=modinv(1);
+    for (int x=1; x<=mx; ++x) {
+        F[x]=((ll)F[x-1]*x)%MD;
+        IF[x]=modinv(F[x]);
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////
 ///////////////////////////// IMPLEMENTATION /////////////////////////////
