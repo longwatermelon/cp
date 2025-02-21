@@ -35,3 +35,8 @@ function usaco() {
     clear
     nvim
 }
+
+function tcgen() {
+    cp ~/templates/tcgen.cpp $1-gen.cpp
+    echo "tcgen template to $1-gen.cpp"
+}
