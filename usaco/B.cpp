@@ -6,6 +6,8 @@ using ll=long long;
 #define all(x) begin(x),end(x)
 #define all1(x) begin(x)+1,end(x)
 template <typename T> using vec=vector<T>;
+template <typename T> bool ckmin(T &a, T b) {return b<a ? a=b, true : false;}
+template <typename T> bool ckmax(T &a, T b) {return b>a ? a=b, true : false;}
 
 void solve() {
 }
