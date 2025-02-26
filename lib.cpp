@@ -11,6 +11,7 @@ template <typename T> struct vec3:vector<vector<vector<T>>> {vec3()=default;vec3
 template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){cout<<*it<<' ';it=next(it);}cout<<*it<<'\n';}
 template <typename T> bool ckmin(T &a, T b) {return b<a ? a=b, true : false;}
 template <typename T> bool ckmax(T &a, T b) {return b>a ? a=b, true : false;}
+const int d4i[]={-1,0,1,0}, d4j[]={0,1,0,-1}, d8i[]={-1,-1,0,1,1,1,0,-1}, d8j[]={0,1,1,1,0,-1,-1,-1};
 
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
