@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define bool int
 using namespace std;
 using ll=long long;
 #define sig(x) (x<0?-1:1)
