@@ -36,15 +36,15 @@ ll modpow(ll x, ll p) {assert(p>=0);return p==0?1:((ll)modpow(((ll)x*x)%MD,p/2)*
 ll modinv(ll x) {return modpow(x,MD-2);}
 
 // recursive n choose r
-ll rencr(int n, int r) {
+ll recomb(int n, int r) {
     if (n<r) return 0;
     else if (r==0||r==n) return 1;
-    else return (rencr(n-1,r-1)+rencr(n-1,r))%MD;
+    else return (recomb(n-1,r-1)+recomb(n-1,r))%MD;
 }
 
 // closed form n choose r
 vec<int> F,IF; // fac, inv fac
-ll clncr(int n, int r) {
+ll comb(int n, int r) {
     if (n<r) return 0;
     return (((ll)F[n]*IF[r])%MD*IF[n-r])%MD;
 }
