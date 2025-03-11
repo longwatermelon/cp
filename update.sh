@@ -1,5 +1,4 @@
 #!/bin/sh
-cp cpt.cpp ~/templates/cpt.cpp
 cp cft.cpp ~/templates/cft.cpp
 rm -rf ~/templates/cf
 rm -rf ~/templates/usaco
