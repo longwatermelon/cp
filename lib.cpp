@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll=long long;
-#define sig(x) (x<0?-1:1)
+#define sign(x) (x<0?-1:1)
 #define sz(x) ((int)size(x))
 #define all(x) begin(x),end(x)
 #define all1(x) begin(x)+1,end(x)
@@ -22,10 +22,10 @@ template <typename T> using ordset = tree<T,null_type,less<T>,rb_tree_tag,tree_o
 ///////////////////////////// BASIC MATH /////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-template <typename T> T cdiv(T a, T b) {return a/b+(sig(a)/sig(b)==1 && a%b);}
-template <typename T> T fdiv(T a, T b) {return a/b-(sig(a)/sig(b)==-1 && a%b);}
-template <typename T> T mod(T a, T b) {return ((a%b)+b)%b;}
-template <typename T> T rmod(T a, T mn, T mx) {return mod((a-mn),(mx-mn+1))+mn;}
+ll cdiv(ll a, ll b) {return a/b+(sign(a)/sign(b)==1 && a%b);}
+ll fdiv(ll a, ll b) {return a/b-(sign(a)/sign(b)==-1 && a%b);}
+ll mod(ll a, ll b) {return ((a%b)+b)%b;}
+ll rmod(ll a, ll mn, ll mx) {return mod((a-mn),(mx-mn+1))+mn;}
 
 /////////////////////////////////////////////////////////////////////////
 ///////////////////////////// COMBINATORICS /////////////////////////////
@@ -36,23 +36,23 @@ ll modpow(ll x, ll p) {assert(p>=0);return p==0?1:((ll)modpow(((ll)x*x)%MD,p/2)*
 ll modinv(ll x) {return modpow(x,MD-2);}
 
 // recursive n choose r
-ll recomb(int n, int r) {
+ll recomb(ll n, ll r) {
     if (n<r) return 0;
     else if (r==0||r==n) return 1;
     else return (recomb(n-1,r-1)+recomb(n-1,r))%MD;
 }
 
 // closed form n choose r
-vec<int> F,IF; // fac, inv fac
-ll comb(int n, int r) {
+vec<ll> F,IF; // fac, inv fac
+ll comb(ll n, ll r) {
     if (n<r) return 0;
-    return (((ll)F[n]*IF[r])%MD*IF[n-r])%MD;
+    return ((F[n]*IF[r])%MD*IF[n-r])%MD;
 }
 
 // gen F, IF for clncr function
 void genfac(int mx) {
-    F=vec<int>(mx+1);
-    IF=vec<int>(mx+1);
+    F.resize(mx+1);
+    IF.resize(mx+1);
     F[0]=1;
     IF[0]=modinv(1);
     for (int x=1; x<=mx; ++x) {
@@ -94,9 +94,9 @@ void sieveofe(int mx, bool *prime) {
 }
 
 // unordered factors of x, O(sqrt(x))
-template <typename T> vector<T> factor(T x) {
-    vector<T> f;
-    for (T i=1; i*i<=x; ++i) {
+vector<ll> factor(ll x) {
+    vector<ll> f;
+    for (ll i=1; i*i<=x; ++i) {
         if (x%i==0) {
             f.push_back(i);
             if (x/i!=i)
@@ -107,9 +107,9 @@ template <typename T> vector<T> factor(T x) {
 }
 
 // prime factors of x, O(sqrt(x))
-template <typename T> map<T,int> primefac(T x) {
-    map<T,int> mp;
-    for (T i=2; i*i<=x; ++i) {
+map<ll,int> primefac(ll x) {
+    map<ll,int> mp;
+    for (ll i=2; i*i<=x; ++i) {
         while (x%i==0) {
             mp[i]++;
             x/=i;
@@ -168,9 +168,9 @@ ll sqrtcl(ll x) {
 
 // arr 1-indexed
 // build sparse table (range queries for idempotent fn f)
-vec2<int> sparse_table_build(int *a, int n, const function<int(int,int)> &f) {
+vec2<ll> sparse_table_build(ll *a, int n, const function<ll(ll,ll)> &f) {
     int mxh=logfl(2,n);
-    vec2<int> v(mxh+1,n+1);
+    vec2<ll> v(mxh+1,n+1);
     for (int i=1; i<=n; ++i) {
         v[0][i]=a[i];
     }
@@ -185,7 +185,7 @@ vec2<int> sparse_table_build(int *a, int n, const function<int(int,int)> &f) {
 }
 
 // query [l,r] with idempotent function f
-int sparse_table_query(const vec2<int> &v, int l, int r, const function<int(int,int)> &f) {
+ll sparse_table_query(const vec2<ll> &v, int l, int r, const function<ll(ll,ll)> &f) {
     assert(l<=r);
     int p=logfl(2,r-l+1);
     return f(v[p][l],v[p][r-(1<<p)+1]);
