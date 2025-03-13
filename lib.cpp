@@ -86,7 +86,7 @@ void sieveofe(int mx, bool *prime) {
     fill(prime+2,prime+1+mx,true);
     for (int i=2; i*i<=mx; ++i) {
         int j=i;
-        while(i*j<mx) {
+        while(i*j<=mx) {
             prime[i*j]=false;
             ++j;
         }
