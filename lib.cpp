@@ -31,22 +31,22 @@ ll rmod(ll a, ll mn, ll mx) {return mod((a-mn),(mx-mn+1))+mn;}
 ///////////////////////////// COMBINATORICS /////////////////////////////
 /////////////////////////////////////////////////////////////////////////
 
-const ll MD=1e9+7;
-ll modpow(ll x, ll p) {assert(p>=0);return p==0?1:((ll)modpow(((ll)x*x)%MD,p/2)*(p&1?x:1))%MD;}
-ll modinv(ll x) {return modpow(x,MD-2);}
+const ll M=1e9+7;
+ll modpow(ll x, ll p) {assert(p>=0);return p==0?1:((ll)modpow(((ll)x*x)%M,p/2)*(p&1?x:1))%M;}
+ll modinv(ll x) {return modpow(x,M-2);}
 
 // recursive n choose r
 ll recomb(ll n, ll r) {
     if (n<r) return 0;
     else if (r==0||r==n) return 1;
-    else return (recomb(n-1,r-1)+recomb(n-1,r))%MD;
+    else return (recomb(n-1,r-1)+recomb(n-1,r))%M;
 }
 
 // closed form n choose r
 vec<ll> F,IF; // fac, inv fac
 ll comb(ll n, ll r) {
     if (n<r) return 0;
-    return ((F[n]*IF[r])%MD*IF[n-r])%MD;
+    return ((F[n]*IF[r])%M*IF[n-r])%M;
 }
 
 // gen F, IF for clncr function
@@ -56,7 +56,7 @@ void genfac(int mx) {
     F[0]=1;
     IF[0]=modinv(1);
     for (int x=1; x<=mx; ++x) {
-        F[x]=((ll)F[x-1]*x)%MD;
+        F[x]=((ll)F[x-1]*x)%M;
         IF[x]=modinv(F[x]);
     }
 }

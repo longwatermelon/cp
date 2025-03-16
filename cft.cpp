@@ -12,6 +12,7 @@ template <typename T> void vprint(T st, T nd) {auto it=st;while (next(it)!=nd){c
 void yn(bool ans) {puts(ans?"yes":"no");}
 ll cdiv(ll a, ll b) {return a/b+(sign(a)/sign(b)==1 && a%b);}
 ll logfl(ll base, ll x) {assert(base>1);ll res=0,val=1;while (val*base<=x) {val*=base;res++;}return res;}
+ll sqrtfl(ll x) {ll rt=sqrtl(x);if (rt*rt>x) rt--;if ((rt+1)*(rt+1)<=x) rt++;return rt;}
 int popcount(ll x) {int cnt=0;while (x) {cnt+=x&1;x/=2;}return cnt;}
 template <typename T> using vec=vector<T>;
 template <typename T> struct vec2:vector<vector<T>> {vec2()=default;vec2(int n, int m, T val=T()):vector<vector<T>>(n,vector<T>(m,val)){}void assign(int n, int m, T val = T()) {this->vector<vector<T>>::assign(n, vector<T>(m, val));}};
