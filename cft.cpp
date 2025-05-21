@@ -18,7 +18,7 @@ template <typename T> using vec=vector<T>;
 template <typename T> struct vec2:vector<vector<T>> {vec2()=default;vec2(int n, int m, T val=T()):vector<vector<T>>(n,vector<T>(m,val)){}void assign(int n, int m, T val = T()) {this->vector<vector<T>>::assign(n, vector<T>(m, val));}};
 template <typename T> struct vec3:vector<vector<vector<T>>> {vec3()=default;vec3(int n, int m, int k, T val=T()):vector<vector<vector<T>>>(n,vector<vector<T>>(m,vector<T>(k,val))){}void assign(int n, int m, int k, T val = T()) {this->vector<vector<vector<T>>>::assign(n, vector<vector<T>>(m, vector<T>(k, val)));}};
 template <typename T> void readv(vec<T> &v, int n) {v.assign(n+1,0);for (int i=1; i<=n; ++i) cin>>v[i];}
-void readbinstr(vec<int> &v, int n) {v.assign(n+1,0);for (int i=1; i<=n; ++i) {char c; cin>>c;v[i]=c-'0';}}
+void readnumstr(vec<int> &v, int n) {v.assign(n+1,0);for (int i=1; i<=n; ++i) {char c; cin>>c;v[i]=c-'0';}}
 
 void solve() {
 }
